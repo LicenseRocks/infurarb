@@ -2,6 +2,8 @@ module Infurarb
   class Request
     RPC_METHODS = %i[
       eth_blockNumber
+      eth_getTransactionReceipt
+      eth_getLogs
     ].freeze
 
     attr_reader :endpoint, :method_name, :params
@@ -9,7 +11,6 @@ module Infurarb
       @endpoint = endpoint
       @method_name = method_name
       @params = params
-      @response = nil
     end
 
     def call
@@ -17,7 +18,7 @@ module Infurarb
         endpoint,
         json: { jsonrpc: '2.0', method: method_name, params: params, id: 1 }
       )
-      Response.new(response)
+      Response.new(response, self)
     end
   end
 end

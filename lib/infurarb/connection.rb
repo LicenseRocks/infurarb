@@ -12,10 +12,10 @@ module Infurarb
       true
     end
 
-    def method_missing(method_name)
+    def method_missing(method_name, *params)
       return super unless Request::RPC_METHODS.include?(method_name)
 
-      Request.new(endpoint: endpoint, method_name: method_name).call
+      Request.new(endpoint: endpoint, method_name: method_name, params: params).call
     end
 
     private
