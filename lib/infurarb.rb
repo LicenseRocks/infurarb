@@ -1,5 +1,5 @@
 require "infurarb/version"
 
 module Infurarb
-  # Your code goes here...
+  autoload :Connection, 'infurarb/connection'
 end
