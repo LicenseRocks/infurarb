@@ -2,31 +2,26 @@ require 'http'
 
 module Infurarb
   class Connection
-    attr_reader :args
-    private :args
-
-    RPC_METHODS = %i[
-      eth_blockNumber
-    ].freeze
-
-    def initialize(args = {})
-      @args = args
+    attr_reader :api_key, :network
+    def initialize(api_key:, network:)
+      @api_key = api_key
+      @network = network
     end
 
     def respond_to_missing?
       true
     end
 
-    def method_missing(method)
-      binding.pry
-      if RPC_METHODS.include?(method)
-        HTTP.post(
-          'https://mainnet.infura.io/',
-          json: { jsonrpc: '2.0', method: method, params: [], id: 1 }
-        )
-      else
-        super
-      end
+    def method_missing(method_name)
+      return super unless Request::RPC_METHODS.include?(method_name)
+
+      Request.new(endpoint: endpoint, method_name: method_name).call
+    end
+
+    private
+
+    def endpoint
+      @endpoint ||= "https://#{network}.infura.io/v3/#{api_key}"
     end
   end
 end
