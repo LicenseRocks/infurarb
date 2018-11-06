@@ -21,9 +21,10 @@ Or install it yourself as:
 A simple wrapper around Infura's API. So far only implemented for Ethereum.
 
 ```
-irb> conn = InfuraRb::Connetion.new(token: YOUR_TOKEN)
+irb> conn = InfuraRb::Connetion.new(api_key: <YOUR_TOKEN>, network: <NETWORK>)
 
-irb> conn.gas_price =>
+irb> response = conn.eth_gasPrice
+irb> response.body
 
 {
   jsonrpc: "2.0",
